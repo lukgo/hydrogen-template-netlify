@@ -6,10 +6,10 @@ import {useRootLoaderData} from '~/root';
 import clsx from 'clsx';
 import logo from '~/styles/assets/up&goLogo.webp';
 import cartIcon from '~/styles/assets/cartIcon.svg';
-import TikTokIcon from '~/styles/assets/tiktokIcon.svg';
-import YouTubeIcon from '~/styles/assets/youtubeIcon.svg';
-import InstagramIcon from '~/styles/assets/instagramIcon.svg';
-import FacebookIcon from '~/styles/assets/facebookIcon.svg';
+// import TikTokIcon from '~/styles/assets/tiktokIcon.svg';
+// import YouTubeIcon from '~/styles/assets/youtubeIcon.svg';
+// import InstagramIcon from '~/styles/assets/instagramIcon.svg';
+// import FacebookIcon from '~/styles/assets/facebookIcon.svg';
 import {HeaderMobileMenu} from './HeaderMobileMenu';
 import {HamburgerToggle} from './HamburgerToggle';
 
@@ -192,45 +192,45 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   );
 }
 
-function SocialMediaLinks() {
-  const socialMediaData = [
-    {
-      platform: 'tiktok',
-      url: 'https://www.tiktok.com/@upandgo',
-      icon: TikTokIcon,
-    },
-    {
-      platform: 'youtube',
-      url: 'https://www.youtube.com/channel/UCqU2ZQjJj6k5Jr9zYr6Fv8w',
-      icon: YouTubeIcon,
-    },
-    {
-      platform: 'instagram',
-      url: 'https://www.instagram.com/upandgo',
-      icon: InstagramIcon,
-    },
-    {
-      platform: 'facebook',
-      url: 'https://www.facebook.com/upandgo',
-      icon: FacebookIcon,
-    },
-  ];
+// function SocialMediaLinks() {
+//   const socialMediaData = [
+//     {
+//       platform: 'tiktok',
+//       url: 'https://www.tiktok.com/@upandgo',
+//       icon: TikTokIcon,
+//     },
+//     {
+//       platform: 'youtube',
+//       url: 'https://www.youtube.com/channel/UCqU2ZQjJj6k5Jr9zYr6Fv8w',
+//       icon: YouTubeIcon,
+//     },
+//     {
+//       platform: 'instagram',
+//       url: 'https://www.instagram.com/upandgo',
+//       icon: InstagramIcon,
+//     },
+//     {
+//       platform: 'facebook',
+//       url: 'https://www.facebook.com/upandgo',
+//       icon: FacebookIcon,
+//     },
+//   ];
 
-  return (
-    <div className="ml-auto flex flex-row gap-6">
-      {socialMediaData.map((item) => (
-        <Button
-          variant="link"
-          href={item.url}
-          class="h-auto p-0"
-          target="_blank"
-        >
-          <img src={item.icon} />
-        </Button>
-      ))}
-    </div>
-  );
-}
+//   return (
+//     <div className="ml-auto flex flex-row gap-6">
+//       {socialMediaData.map((item) => (
+//         <Button
+//           variant="link"
+//           href={item.url}
+//           class="h-auto p-0"
+//           target="_blank"
+//         >
+//           <img src={item.icon} />
+//         </Button>
+//       ))}
+//     </div>
+//   );
+// }
 
 function activeLinkStyle({
   isActive,
