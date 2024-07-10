@@ -3,24 +3,38 @@ import {Suspense} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
+import logo from '../styles/assets/up&goLogo.webp';
+import cartIcon from '../styles/assets/cartIcon.svg';
+import clsx from 'clsx';
 
-type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
+type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
 type Viewport = 'desktop' | 'mobile';
 
-export function Header({header, isLoggedIn, cart}: HeaderProps) {
+export function Header({header, cart}: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+    <header
+      className={clsx(
+        'header transition-height ease sticky top-0 z-50 flex h-[4.5rem] w-full duration-300 lg:h-[5.25rem]',
+      )}
+      style={{boxShadow: '0px 0px 12.8px 0px #00000040'}}
+    >
+      <NavLink
+        prefetch="intent"
+        to="/"
+        className="h-[6rem]"
+        style={activeLinkStyle}
+        end
+      >
+        <img className="h-full mt-4" src={logo} />
       </NavLink>
       <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
       />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <HeaderCtas cart={cart} />
     </header>
   );
 }
@@ -36,6 +50,7 @@ export function HeaderMenu({
 }) {
   const {publicStoreDomain} = useRootLoaderData();
   const className = `header-menu-${viewport}`;
+  const twClasses = ``;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
     if (viewport === 'mobile') {
@@ -44,8 +59,24 @@ export function HeaderMenu({
     }
   }
 
+  const baseUrl = 'https://plantwellliving.com';
+  const menuItems = [
+    {
+      label: 'products',
+      url: `${baseUrl}/products`,
+    },
+    {
+      label: 'ingredients',
+      url: `${baseUrl}/ingredients`,
+    },
+    {
+      label: 'faq',
+      url: `${baseUrl}/faq`,
+    },
+  ];
+
   return (
-    <nav className={className} role="navigation">
+    <nav role="navigation" className="flex h-full">
       {viewport === 'mobile' && (
         <NavLink
           end
@@ -57,45 +88,61 @@ export function HeaderMenu({
           Home
         </NavLink>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+      {menuItems.map((item, idx) => {
         if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
         return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={closeAside}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
+          <li
+            key={`menu-list-item-${idx}`}
+            className="flex items-center justify-center"
           >
-            {item.title}
-          </NavLink>
+            <Button
+              variant="link"
+              href={item.url}
+              class="h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] p-xl-style text-navigation-foreground no-underline hover:border-border hover:no-underline"
+            >
+              {item.label}
+            </Button>
+          </li>
         );
       })}
     </nav>
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function Button({
+  children,
+  variant,
+  href,
+  class: className,
+  target,
+}: {
+  children: React.ReactNode;
+  variant: 'link' | 'ghost';
+  href?: string;
+  class?: string;
+  target?: string;
+}) {
+  const buttonClasses = clsx(
+    'flex items-center justify-center h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] text-xl text-navigation-foreground no-underline hover:border-border hover:no-underline',
+    className,
+  );
+
+  if (variant === 'link') {
+    return (
+      <a href={href} target={target} className={buttonClasses}>
+        {children}
+      </a>
+    );
+  }
+
+  return <button className={buttonClasses}>{children}</button>;
+}
+
+function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
-      <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
   );
@@ -109,12 +156,13 @@ function HeaderMenuMobileToggle() {
   );
 }
 
-function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
-}
-
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a className="flex" href="#cart-aside">
+      <img src={cartIcon} />
+      {count}
+    </a>
+  );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

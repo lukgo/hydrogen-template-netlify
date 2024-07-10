@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'IBMPlexSerif';
+  font-display: swap;
+  font-weight: 400;
+  src: url('./fonts/IBMPlexSerif-Text.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBMPlexSerif';
+  font-display: swap;
+  font-weight: 400;
+  font-style: italic;
+  src: url('./fonts/IBMPlexSerif-TextItalic.woff2') format('woff2');
+}
+
+@layer base {
+  @font-face {
+    font-family: 'SAASeriesW01DD';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(assets/fonts/SAASeriesW01DD/font.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Bogart';
+    font-weight: 500;
+    font-display: swap;
+    src: url(assets/fonts/BogartMediumItalic/font.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'DK Longreach';
+    font-weight: normal;
+    font-display: swap;
+    src: url(assets/fonts/DKLongreach/font.woff2) format('woff2');
+  }
+  @font-face {
+    font-family: 'Brandon Grotesque';
+    font-weight: normal;
+    font-display: swap;
+    src: url(assets/fonts/BrandonGrotesque/font.woff2) format('woff2');
+  }
+}
