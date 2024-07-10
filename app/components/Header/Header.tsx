@@ -1,17 +1,44 @@
 import {Await, NavLink} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
-import type {LayoutProps} from './Layout';
+import type {LayoutProps} from '../Layout';
 import {useRootLoaderData} from '~/root';
-import logo from '../styles/assets/up&goLogo.webp';
-import cartIcon from '../styles/assets/cartIcon.svg';
 import clsx from 'clsx';
+import logo from '~/styles/assets/up&goLogo.webp';
+import cartIcon from '~/styles/assets/cartIcon.svg';
+import TikTokIcon from '~/styles/assets/tiktokIcon.svg';
+import YouTubeIcon from '~/styles/assets/youtubeIcon.svg';
+import InstagramIcon from '~/styles/assets/instagramIcon.svg';
+import FacebookIcon from '~/styles/assets/facebookIcon.svg';
+import {HeaderMobileMenu} from './HeaderMobileMenu';
+import {HamburgerToggle} from './HamburgerToggle';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
 type Viewport = 'desktop' | 'mobile';
 
+const baseUrl = 'https://upandgo.com.au';
+const menuItems = [
+  {
+    label: 'products',
+    url: `${baseUrl}/products`,
+  },
+  {
+    label: 'our story',
+    url: `${baseUrl}/ingredients`,
+  },
+  {
+    label: 'merch',
+    url: `${baseUrl}/merch`,
+  },
+  {
+    label: 'faq',
+    url: `${baseUrl}/faq`,
+  },
+];
+
 export function Header({header, cart}: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {shop, menu} = header;
   return (
     <header
@@ -20,21 +47,26 @@ export function Header({header, cart}: HeaderProps) {
       )}
       style={{boxShadow: '0px 0px 12.8px 0px #00000040'}}
     >
+      <HamburgerToggle isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <NavLink
         prefetch="intent"
         to="/"
-        className="h-[6rem]"
+        className="h-[6rem] mr-[1.5rem] flex justify-center w-full lg:w-auto z-10"
         style={activeLinkStyle}
         end
       >
         <img className="h-full mt-4" src={logo} />
       </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-      />
-      <HeaderCtas cart={cart} />
+      <div className="hidden w-full h-full lg:flex">
+        <HeaderMenu
+          menu={menu}
+          viewport="desktop"
+          primaryDomainUrl={header.shop.primaryDomain.url}
+        />
+        {/* <SocialMediaLinks /> */}
+        <HeaderCtas cart={cart} />
+      </div>
+      <HeaderMobileMenu menuOpen={isMenuOpen} menuItems={menuItems} />
     </header>
   );
 }
@@ -48,32 +80,12 @@ export function HeaderMenu({
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
   viewport: Viewport;
 }) {
-  const {publicStoreDomain} = useRootLoaderData();
-  const className = `header-menu-${viewport}`;
-  const twClasses = ``;
-
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
     if (viewport === 'mobile') {
       event.preventDefault();
       window.location.href = event.currentTarget.href;
     }
   }
-
-  const baseUrl = 'https://plantwellliving.com';
-  const menuItems = [
-    {
-      label: 'products',
-      url: `${baseUrl}/products`,
-    },
-    {
-      label: 'ingredients',
-      url: `${baseUrl}/ingredients`,
-    },
-    {
-      label: 'faq',
-      url: `${baseUrl}/faq`,
-    },
-  ];
 
   return (
     <nav role="navigation" className="flex h-full">
@@ -88,24 +100,26 @@ export function HeaderMenu({
           Home
         </NavLink>
       )}
-      {menuItems.map((item, idx) => {
-        if (!item.url) return null;
+      <ul className="flex">
+        {menuItems.map((item, idx) => {
+          if (!item.url) return null;
 
-        return (
-          <li
-            key={`menu-list-item-${idx}`}
-            className="flex items-center justify-center"
-          >
-            <Button
-              variant="link"
-              href={item.url}
-              class="h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] p-xl-style text-navigation-foreground no-underline hover:border-border hover:no-underline"
+          return (
+            <li
+              key={`menu-list-item-${idx}`}
+              className="flex items-center justify-center"
             >
-              {item.label}
-            </Button>
-          </li>
-        );
-      })}
+              <Button
+                variant="link"
+                href={item.url}
+                class="h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] p-xl-style text-navigation-foreground no-underline hover:border-border hover:no-underline"
+              >
+                {item.label}
+              </Button>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
@@ -158,7 +172,7 @@ function HeaderMenuMobileToggle() {
 
 function CartBadge({count}: {count: number}) {
   return (
-    <a className="flex" href="#cart-aside">
+    <a className="flex " href="#cart-aside">
       <img src={cartIcon} />
       {count}
     </a>
@@ -178,47 +192,45 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
   );
 }
 
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
+function SocialMediaLinks() {
+  const socialMediaData = [
     {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/collections',
-      items: [],
+      platform: 'tiktok',
+      url: 'https://www.tiktok.com/@upandgo',
+      icon: TikTokIcon,
     },
     {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
+      platform: 'youtube',
+      url: 'https://www.youtube.com/channel/UCqU2ZQjJj6k5Jr9zYr6Fv8w',
+      icon: YouTubeIcon,
     },
     {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
+      platform: 'instagram',
+      url: 'https://www.instagram.com/upandgo',
+      icon: InstagramIcon,
     },
     {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
+      platform: 'facebook',
+      url: 'https://www.facebook.com/upandgo',
+      icon: FacebookIcon,
     },
-  ],
-};
+  ];
+
+  return (
+    <div className="ml-auto flex flex-row gap-6">
+      {socialMediaData.map((item) => (
+        <Button
+          variant="link"
+          href={item.url}
+          class="h-auto p-0"
+          target="_blank"
+        >
+          <img src={item.icon} />
+        </Button>
+      ))}
+    </div>
+  );
+}
 
 function activeLinkStyle({
   isActive,

@@ -7,7 +7,7 @@ import type {
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
+import {Header} from '~/components/Header';
 import {CartMain} from '~/components/Cart';
 
 export type LayoutProps = {
@@ -22,7 +22,7 @@ export function Layout({cart, children = null, footer, header}: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
-      <MobileMenuAside menu={header?.menu} shop={header?.shop} />
+      {/* <MobileMenuAside menu={header?.menu} shop={header?.shop} /> */}
       <Header header={header} cart={cart} />
       <main>{children}</main>
       <Suspense>
@@ -48,20 +48,20 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
   );
 }
 
-function MobileMenuAside({
-  menu,
-  shop,
-}: {
-  menu: HeaderQuery['menu'];
-  shop: HeaderQuery['shop'];
-}) {
-  return (
-    <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu
-        menu={menu}
-        viewport="mobile"
-        primaryDomainUrl={shop.primaryDomain.url}
-      />
-    </Aside>
-  );
-}
+// function MobileMenuAside({
+//   menu,
+//   shop,
+// }: {
+//   menu: HeaderQuery['menu'];
+//   shop: HeaderQuery['shop'];
+// }) {
+//   return (
+//     <Aside id="mobile-menu-aside" heading="MENU">
+//       <HeaderMenu
+//         menu={menu}
+//         viewport="mobile"
+//         primaryDomainUrl={shop.primaryDomain.url}
+//       />
+//     </Aside>
+//   );
+// }
