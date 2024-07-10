@@ -20,7 +20,7 @@ const carouselItemBasis = (itemsVisible) =>
     itemsVisible - 1,
   )})/${itemsVisible})]`;
 
-export const shadcnPlugin = plugin(
+export const brandThemePlugin = plugin(
   function ({addBase, addUtilities}) {
     addUtilities({
       /* Hide scrollbar for Chrome, Safari and Opera */

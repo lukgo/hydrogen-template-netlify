@@ -1,4 +1,4 @@
-import {shadcnPlugin} from './shadcnPlugin.js';
+import {brandThemePlugin} from './brandThemePlugin.js';
 
 module.exports = {
   darkMode: ['class'],
@@ -7,5 +7,5 @@ module.exports = {
     extend: {},
   },
   safelist: ['dark'],
-  plugins: [shadcnPlugin],
+  plugins: [brandThemePlugin],
 };
