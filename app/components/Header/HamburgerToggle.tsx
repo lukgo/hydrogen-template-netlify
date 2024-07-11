@@ -15,7 +15,7 @@ export function HamburgerToggle({
       aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
       aria-expanded={isMenuOpen}
       className="flex cursor-pointer flex-col items-center justify-center transition-transform duration-500 relative lg:hidden"
-      style={{width: '1.5rem', height: '1.5rem'}}
+      style={{width: '2.5rem', height: '2.5rem'}}
       type="button"
       title="hamburger button"
     >

@@ -117,14 +117,16 @@ export default function Product() {
   const {product, variants} = useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <ProductMain
-        selectedVariant={selectedVariant}
-        product={product}
-        variants={variants}
-      />
-    </div>
+    <section className="bg-neutral max-w-[90rem] m-auto pb-[6rem]">
+      <div className="product">
+        <ProductImage image={selectedVariant?.image} />
+        <ProductMain
+          selectedVariant={selectedVariant}
+          product={product}
+          variants={variants}
+        />
+      </div>
+    </section>
   );
 }
 
@@ -156,8 +158,8 @@ function ProductMain({
 }) {
   const {title, descriptionHtml} = product;
   return (
-    <div className="product-main">
-      <h1>{title}</h1>
+    <div className="product-main px-4 py-4 lg:py-[6rem] lg:px-12">
+      <h4>{title}</h4>
       <ProductPrice selectedVariant={selectedVariant} />
       <br />
       <Suspense
@@ -183,11 +185,6 @@ function ProductMain({
         </Await>
       </Suspense>
       <br />
-      <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
       <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
       <br />
     </div>
@@ -207,9 +204,9 @@ function ProductPrice({
           <br />
           <div className="product-price-on-sale">
             {selectedVariant ? <Money data={selectedVariant.price} /> : null}
-            <s>
+            <p className="p-xl-style">
               <Money data={selectedVariant.compareAtPrice} />
-            </s>
+            </p>
           </div>
         </>
       ) : (

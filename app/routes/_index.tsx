@@ -6,6 +6,7 @@ import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
+import {HeroBanner} from '~/components/ui/HeroBanner';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -24,6 +25,7 @@ export default function Homepage() {
   const data = useLoaderData<typeof loader>();
   return (
     <div className="home">
+      <HeroBanner />
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
@@ -47,7 +49,7 @@ function FeaturedCollection({
           <Image data={image} sizes="100vw" />
         </div>
       )}
-      <h1>{collection.title}</h1>
+      {/* <h1>{collection.title}</h1> */}
     </Link>
   );
 }
@@ -58,30 +60,41 @@ function RecommendedProducts({
   products: Promise<RecommendedProductsQuery>;
 }) {
   return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
+    <div className="recommended-products max-w-[90rem] mx-2 lg:m-auto">
+      {/* TODO - seed from config */}
+      <div className="py-12 px-4 text-center">
+        <h2 className="mb-4">Merch</h2>
+        <p className="p-xl-style">
+          This is some text for seo and other things that someone wants to put
+          here
+        </p>
+      </div>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {({products}) => (
-            <div className="recommended-products-grid">
-              {products.nodes.map((product) => (
-                <Link
-                  key={product.id}
-                  className="recommended-product"
-                  to={`/products/${product.handle}`}
-                >
-                  <Image
-                    data={product.images.nodes[0]}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 20vw, 50vw"
-                  />
-                  <h4>{product.title}</h4>
-                  <small>
-                    <Money data={product.priceRange.minVariantPrice} />
-                  </small>
-                </Link>
-              ))}
-            </div>
+            <section className="mb-12">
+              <div className="recommended-products-grid gap-x-4 lg:gap-x-6 gap-y-8 lg:gap-y-[4.5rem]">
+                {products.nodes.map((product) => (
+                  <Link
+                    key={product.id}
+                    className="recommended-product"
+                    to={`/products/${product.handle}`}
+                  >
+                    <Image
+                      data={product.images.nodes[0]}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 20vw, 50vw"
+                    />
+                    <div className="mt-4 lg:mt-8">
+                      <h4>{product.title}</h4>
+                      <p className="p-xl-style lg:mt-4">
+                        <Money data={product.priceRange.minVariantPrice} />
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
           )}
         </Await>
       </Suspense>
@@ -136,7 +149,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 8, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

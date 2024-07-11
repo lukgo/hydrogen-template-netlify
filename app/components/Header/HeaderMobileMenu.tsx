@@ -1,3 +1,5 @@
+import {SocialMediaLinks} from '../ui';
+
 export function HeaderMobileMenu({
   menuOpen,
   menuItems,
@@ -14,7 +16,7 @@ export function HeaderMobileMenu({
       <div className="flex h-full flex-col justify-between">
         <ul className="h-full">
           {menuItems.map((menuItem) => (
-            <li className="border-navigation-border/50">
+            <li className="border-b border-navigation-border/50">
               <a
                 href={menuItem.url}
                 target="_self"
@@ -27,6 +29,9 @@ export function HeaderMobileMenu({
             </li>
           ))}
         </ul>
+        <div className="flex flex-row gap-6 px-4 py-6">
+          <SocialMediaLinks className="ml-0" />
+        </div>
       </div>
     </div>
   );

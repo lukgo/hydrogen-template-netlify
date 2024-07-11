@@ -26,7 +26,7 @@ export function Aside({
           window.location.hash = '';
         }}
       />
-      <aside>
+      <aside className="bg-neutral">
         <header>
           <h3>{heading}</h3>
           <CloseAside />

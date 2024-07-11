@@ -22,9 +22,8 @@ export function Layout({cart, children = null, footer, header}: LayoutProps) {
   return (
     <>
       <CartAside cart={cart} />
-      {/* <MobileMenuAside menu={header?.menu} shop={header?.shop} /> */}
       <Header header={header} cart={cart} />
-      <main>{children}</main>
+      <main className="bg-primary-foreground">{children}</main>
       <Footer />
     </>
   );
@@ -43,21 +42,3 @@ function CartAside({cart}: {cart: LayoutProps['cart']}) {
     </Aside>
   );
 }
-
-// function MobileMenuAside({
-//   menu,
-//   shop,
-// }: {
-//   menu: HeaderQuery['menu'];
-//   shop: HeaderQuery['shop'];
-// }) {
-//   return (
-//     <Aside id="mobile-menu-aside" heading="MENU">
-//       <HeaderMenu
-//         menu={menu}
-//         viewport="mobile"
-//         primaryDomainUrl={shop.primaryDomain.url}
-//       />
-//     </Aside>
-//   );
-// }

@@ -53,13 +53,14 @@ export function Header({header, cart}: HeaderProps) {
       >
         <img className="h-full mt-4" src={logo} />
       </NavLink>
+      <CartToggle className="lg:hidden" cart={cart} />
       <div className="hidden w-full h-full lg:flex">
         <HeaderMenu
           menu={menu}
           viewport="desktop"
           primaryDomainUrl={header.shop.primaryDomain.url}
         />
-        <SocialMediaLinks />
+        <SocialMediaLinks className="lg:ml-auto" />
         <HeaderCtas cart={cart} />
       </div>
       <HeaderMobileMenu menuOpen={isMenuOpen} menuItems={menuItems} />
@@ -117,28 +118,32 @@ export function HeaderMenu({
 function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <nav className="flex items-center" role="navigation">
-      {/* <HeaderMenuMobileToggle /> */}
-      <CartToggle cart={cart} />
+      <CartToggle className="pl-12 pr-4" cart={cart} />
     </nav>
   );
 }
 
-function CartBadge({count}: {count: number}) {
+function CartBadge({count, className}: {count: number; className?: string}) {
   return (
-    <a className="flex pr-4 pl-12" href="#cart-aside">
+    <a className={clsx('flex', className)} href="#cart-aside">
       <img className="w-[3rem] h-[3rem]" src={cartIcon} />
-      {count}
+      <span className="text-xs ml-[-0.5rem]">{count}</span>
     </a>
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+function CartToggle({
+  cart,
+  className,
+}: Pick<HeaderProps, 'cart'> & {className?: string}) {
   return (
     <Suspense fallback={<CartBadge count={0} />}>
       <Await resolve={cart}>
         {(cart) => {
-          if (!cart) return <CartBadge count={0} />;
-          return <CartBadge count={cart.totalQuantity || 0} />;
+          if (!cart) return <CartBadge className={className} count={0} />;
+          return (
+            <CartBadge className={className} count={cart.totalQuantity || 0} />
+          );
         }}
       </Await>
     </Suspense>

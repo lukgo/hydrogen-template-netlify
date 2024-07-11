@@ -3,6 +3,7 @@ import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import {Link} from '@remix-run/react';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/utils';
+import clsx from 'clsx';
 
 type CartLine = CartApiQueryFragment['lines']['nodes'][0];
 
@@ -143,7 +144,10 @@ export function CartSummary({
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
 
   return (
-    <div aria-labelledby="cart-summary" className={className}>
+    <div
+      aria-labelledby="cart-summary bg-neutral"
+      className={clsx('bg-neutral', className)}
+    >
       <h4>Totals</h4>
       <dl className="cart-subtotal">
         <dt>Subtotal</dt>

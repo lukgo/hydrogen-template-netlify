@@ -16,7 +16,7 @@ export function Button({
   onClick?: () => void;
 }) {
   const buttonClasses = clsx(
-    'flex items-center justify-center h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] text-xl text-navigation-foreground no-underline hover:border-border hover:no-underline',
+    'flex items-center justify-center min-w-4 content-center text-xl text-navigation-foreground',
     className,
   );
 

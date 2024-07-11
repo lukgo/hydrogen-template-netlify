@@ -24,7 +24,7 @@ const menuItems = [
 
 export function Footer() {
   return (
-    <footer className="flex w-full flex-col gap-8 px-4 pb-10 pt-12 lg:px-6">
+    <footer className="flex w-full flex-col gap-8 px-4 pb-10 pt-12 lg:px-6 bg-brand-color1">
       <div>
         <img
           src={logo}
@@ -34,7 +34,7 @@ export function Footer() {
         />
       </div>
       <div className="flex flex-col justify-between gap-8 sm:flex-row">
-        <SocialMediaLinks />
+        <SocialMediaLinks className="lg:ml-auto" />
       </div>
       <div>
         <ul className="flex w-full flex-row flex-wrap gap-6">
@@ -42,7 +42,7 @@ export function Footer() {
             <li>
               <a
                 href={item.url}
-                className="block text-base leading-5 underline"
+                className="block text-base text-primary-foreground leading-5 underline"
               >
                 {item.label}
               </a>
