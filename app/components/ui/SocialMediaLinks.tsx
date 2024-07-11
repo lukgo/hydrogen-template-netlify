@@ -1,8 +1,8 @@
 import {Button} from './Button';
-import TikTokIcon from '~/styles/assets/tiktokIcon.svg';
-import YouTubeIcon from '~/styles/assets/youtubeIcon.svg';
-import InstagramIcon from '~/styles/assets/instagramIcon.svg';
-import FacebookIcon from '~/styles/assets/facebookIcon.svg';
+import TikTokIcon from '~/styles/assets/icons/tiktokIcon.svg';
+import YouTubeIcon from '~/styles/assets/icons/youtubeIcon.svg';
+import InstagramIcon from '~/styles/assets/icons/instagramIcon.svg';
+import FacebookIcon from '~/styles/assets/icons/facebookIcon.svg';
 import clsx from 'clsx';
 
 export function SocialMediaLinks({className}: {className?: string}) {

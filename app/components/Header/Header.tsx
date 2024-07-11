@@ -4,7 +4,7 @@ import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from '../Layout';
 import clsx from 'clsx';
 import logo from '~/styles/assets/up&goLogo.webp';
-import cartIcon from '~/styles/assets/cartIcon.svg';
+import cartIcon from '~/styles/assets/icons/cartIcon.svg';
 import {HeaderMobileMenu} from './HeaderMobileMenu';
 import {HamburgerToggle} from './HamburgerToggle';
 import {Button} from '../ui/Button';
