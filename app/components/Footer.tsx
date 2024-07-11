@@ -1,110 +1,70 @@
-import {NavLink} from '@remix-run/react';
-import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/root';
+import logo from '~/styles/assets/up&goLogo.webp';
+import {SocialMediaLinks} from './ui';
 
-export function Footer({
-  menu,
-  shop,
-}: FooterQuery & {shop: HeaderQuery['shop']}) {
+// TODO move outside and seed from config file
+const baseUrl = 'https://upandgo.com.au';
+const menuItems = [
+  {
+    label: 'products',
+    url: `${baseUrl}/products`,
+  },
+  {
+    label: 'our story',
+    url: `${baseUrl}/ingredients`,
+  },
+  {
+    label: 'merch',
+    url: `${baseUrl}/merch`,
+  },
+  {
+    label: 'faq',
+    url: `${baseUrl}/faq`,
+  },
+];
+
+export function Footer() {
   return (
-    <footer className="footer">
-      <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
+    <footer className="flex w-full flex-col gap-8 px-4 pb-10 pt-12 lg:px-6">
+      <div>
+        <img
+          src={logo}
+          alt="logoAltText"
+          title="logoAltText"
+          className="inline-block brand-logo-large"
+        />
+      </div>
+      <div className="flex flex-col justify-between gap-8 sm:flex-row">
+        <SocialMediaLinks />
+      </div>
+      <div>
+        <ul className="flex w-full flex-row flex-wrap gap-6">
+          {menuItems.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                className="block text-base leading-5 underline"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:gap-0">
+        <div>
+          <p className="text-xs opacity-60">copyrightText goes here</p>
+        </div>
+        <p className="text-xs opacity-60">
+          Website by{' '}
+          <a
+            href="https://www.mudbath.com.au/"
+            target="_blank"
+            className="underline"
+          >
+            Mudbath
+          </a>
+        </p>
+      </div>
     </footer>
   );
-}
-
-function FooterMenu({
-  menu,
-  primaryDomainUrl,
-}: {
-  menu: FooterQuery['menu'];
-  primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
-}) {
-  const {publicStoreDomain} = useRootLoaderData();
-
-  return (
-    <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
-          </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
-    </nav>
-  );
-}
-
-const FALLBACK_FOOTER_MENU = {
-  id: 'gid://shopify/Menu/199655620664',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461633060920',
-      resourceId: 'gid://shopify/ShopPolicy/23358046264',
-      tags: [],
-      title: 'Privacy Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/privacy-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633093688',
-      resourceId: 'gid://shopify/ShopPolicy/23358013496',
-      tags: [],
-      title: 'Refund Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/refund-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633126456',
-      resourceId: 'gid://shopify/ShopPolicy/23358111800',
-      tags: [],
-      title: 'Shipping Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/shipping-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633159224',
-      resourceId: 'gid://shopify/ShopPolicy/23358079032',
-      tags: [],
-      title: 'Terms of Service',
-      type: 'SHOP_POLICY',
-      url: '/policies/terms-of-service',
-      items: [],
-    },
-  ],
-};
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
 }

@@ -2,16 +2,13 @@ import {Await, NavLink} from '@remix-run/react';
 import {Suspense, useState} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from '../Layout';
-import {useRootLoaderData} from '~/root';
 import clsx from 'clsx';
 import logo from '~/styles/assets/up&goLogo.webp';
 import cartIcon from '~/styles/assets/cartIcon.svg';
-// import TikTokIcon from '~/styles/assets/tiktokIcon.svg';
-// import YouTubeIcon from '~/styles/assets/youtubeIcon.svg';
-// import InstagramIcon from '~/styles/assets/instagramIcon.svg';
-// import FacebookIcon from '~/styles/assets/facebookIcon.svg';
 import {HeaderMobileMenu} from './HeaderMobileMenu';
 import {HamburgerToggle} from './HamburgerToggle';
+import {Button} from '../ui/Button';
+import {SocialMediaLinks} from '../ui/SocialMediaLinks';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
@@ -52,7 +49,6 @@ export function Header({header, cart}: HeaderProps) {
         prefetch="intent"
         to="/"
         className="h-[6rem] mr-[1.5rem] flex justify-center w-full lg:w-auto z-10"
-        style={activeLinkStyle}
         end
       >
         <img className="h-full mt-4" src={logo} />
@@ -63,7 +59,7 @@ export function Header({header, cart}: HeaderProps) {
           viewport="desktop"
           primaryDomainUrl={header.shop.primaryDomain.url}
         />
-        {/* <SocialMediaLinks /> */}
+        <SocialMediaLinks />
         <HeaderCtas cart={cart} />
       </div>
       <HeaderMobileMenu menuOpen={isMenuOpen} menuItems={menuItems} />
@@ -90,13 +86,7 @@ export function HeaderMenu({
   return (
     <nav role="navigation" className="flex h-full">
       {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
+        <NavLink end onClick={closeAside} prefetch="intent" to="/">
           Home
         </NavLink>
       )}
@@ -112,7 +102,7 @@ export function HeaderMenu({
               <Button
                 variant="link"
                 href={item.url}
-                class="h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] p-xl-style text-navigation-foreground no-underline hover:border-border hover:no-underline"
+                className="h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] p-xl-style text-navigation-foreground no-underline hover:border-border hover:no-underline"
               >
                 {item.label}
               </Button>
@@ -124,56 +114,19 @@ export function HeaderMenu({
   );
 }
 
-function Button({
-  children,
-  variant,
-  href,
-  class: className,
-  target,
-}: {
-  children: React.ReactNode;
-  variant: 'link' | 'ghost';
-  href?: string;
-  class?: string;
-  target?: string;
-}) {
-  const buttonClasses = clsx(
-    'flex items-center justify-center h-full min-w-4 content-center border-b-2 border-transparent px-[2.75rem] text-xl text-navigation-foreground no-underline hover:border-border hover:no-underline',
-    className,
-  );
-
-  if (variant === 'link') {
-    return (
-      <a href={href} target={target} className={buttonClasses}>
-        {children}
-      </a>
-    );
-  }
-
-  return <button className={buttonClasses}>{children}</button>;
-}
-
 function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
+    <nav className="flex items-center" role="navigation">
+      {/* <HeaderMenuMobileToggle /> */}
       <CartToggle cart={cart} />
     </nav>
   );
 }
 
-function HeaderMenuMobileToggle() {
-  return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
-    </a>
-  );
-}
-
 function CartBadge({count}: {count: number}) {
   return (
-    <a className="flex " href="#cart-aside">
-      <img src={cartIcon} />
+    <a className="flex pr-4 pl-12" href="#cart-aside">
+      <img className="w-[3rem] h-[3rem]" src={cartIcon} />
       {count}
     </a>
   );
@@ -190,57 +143,4 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
       </Await>
     </Suspense>
   );
-}
-
-// function SocialMediaLinks() {
-//   const socialMediaData = [
-//     {
-//       platform: 'tiktok',
-//       url: 'https://www.tiktok.com/@upandgo',
-//       icon: TikTokIcon,
-//     },
-//     {
-//       platform: 'youtube',
-//       url: 'https://www.youtube.com/channel/UCqU2ZQjJj6k5Jr9zYr6Fv8w',
-//       icon: YouTubeIcon,
-//     },
-//     {
-//       platform: 'instagram',
-//       url: 'https://www.instagram.com/upandgo',
-//       icon: InstagramIcon,
-//     },
-//     {
-//       platform: 'facebook',
-//       url: 'https://www.facebook.com/upandgo',
-//       icon: FacebookIcon,
-//     },
-//   ];
-
-//   return (
-//     <div className="ml-auto flex flex-row gap-6">
-//       {socialMediaData.map((item) => (
-//         <Button
-//           variant="link"
-//           href={item.url}
-//           class="h-auto p-0"
-//           target="_blank"
-//         >
-//           <img src={item.icon} />
-//         </Button>
-//       ))}
-//     </div>
-//   );
-// }
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
 }
